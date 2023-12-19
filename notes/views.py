@@ -52,6 +52,11 @@ class NoteDelete(NoteBase, generic.DeleteView):
 class NotesList(NoteBase, generic.ListView):
     """Список всех заметок пользователя."""
     template_name = 'notes/list.html'
+    context_object_name = 'notes'  # Устанавливаем имя контекста для объектов списка
+
+    def get_queryset(self):
+        """Пользователь может работать только со своими заметками."""
+        return Note.objects.filter(author=self.request.user)
 
 
 class NoteDetail(NoteBase, generic.DetailView):
